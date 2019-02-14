@@ -4,6 +4,7 @@ import java.util.List;
 
 import hh.swd20.Bookstore.domain.Book;
 import hh.swd20.Bookstore.domain.BookstoreRepository;
+import hh.swd20.Bookstore.domain.CategoryRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class BookController {
 	@Autowired
 	private BookstoreRepository repository;
+	
+	@Autowired
+	private CategoryRepository crepository;
 
 	@RequestMapping(value="/booklist")
 	public String bookList(Model model) {
@@ -28,7 +32,8 @@ public class BookController {
 	@RequestMapping(value = "/add")
     public String addBook(Model model){
     	model.addAttribute("book", new Book()); // annetaan yksi tyhjä olio
-        return "addbook";
+        model.addAttribute("categories", crepository.findAll());
+    	return "addbook";
     }
 	
 	@PostMapping(value = "/save")
@@ -45,7 +50,8 @@ public class BookController {
 	
 	@RequestMapping(value = "/edit/{id}")
     public String editBook(@PathVariable("id") Long id, Model model) {
-    	model.addAttribute("book", repository.findById(id)); 
+    	model.addAttribute("book", repository.findById(id));
+    	model.addAttribute("categories", crepository.findAll());
         return "editbook";
     }
 	

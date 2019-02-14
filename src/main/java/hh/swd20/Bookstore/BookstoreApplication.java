@@ -6,8 +6,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
 import hh.swd20.Bookstore.domain.Book;
 import hh.swd20.Bookstore.domain.BookstoreRepository;
+import hh.swd20.Bookstore.domain.Category;
+import hh.swd20.Bookstore.domain.CategoryRepository;
 
 @SpringBootApplication
 public class BookstoreApplication {
@@ -18,18 +21,23 @@ public class BookstoreApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner bookDemo(BookstoreRepository repository) {
+	public CommandLineRunner bookDemo(BookstoreRepository brepository, CategoryRepository crepository) {
 		return (args) -> {
-			log.info("save a couple of books");
-			repository.save(new Book("And then there were none","Agatha Christie","123123-21",14.90,1939)); // tänne kirjojen tiedot!
-			repository.save(new Book("Veljeni leijonamieli","Astrid Lingren","223123-12",13.80,1973));	
+			
+			Category category1 = new Category("Thriller");
+			crepository.save(category1);
+			brepository.save(new Book("And then there were none","Agatha Christie","123123-21",14.90,1939,category1)); // tänne kirjojen tiedot!
+			
+			Category category2 = new Category("Adventure");
+			crepository.save(category2);
+			brepository.save(new Book("Veljeni leijonamieli","Astrid Lingren","223123-12",13.80,1973,category2));	
 			
 			log.info("fetch all books");
-			for (Book book : repository.findAll()) {
+			for (Book book : brepository.findAll()) {
 				log.info(book.toString());
 			}
+			
 		};
 		
 	}
 }
-
