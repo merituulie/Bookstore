@@ -1,6 +1,7 @@
 package hh.swd20.Bookstore.web;
 
 import java.util.List;
+import java.util.Optional;
 
 import hh.swd20.Bookstore.domain.Book;
 import hh.swd20.Bookstore.domain.BookstoreRepository;
@@ -12,8 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class BookController {
@@ -28,6 +31,17 @@ public class BookController {
 		model.addAttribute("books", repository.findAll());
 		return "booklist";
 	}
+	
+	@GetMapping(value="/books")
+	public @ResponseBody List<Book> bookListRest() {
+		return (List<Book>) repository.findAll();
+	}
+	
+	@GetMapping(value="/books/{id}")
+	public @ResponseBody Optional<Book> findBookRest(@PathVariable("id") Long bookId) {
+		return repository.findById(bookId);
+	}
+	
 	
 	@RequestMapping(value = "/add")
     public String addBook(Model model){
