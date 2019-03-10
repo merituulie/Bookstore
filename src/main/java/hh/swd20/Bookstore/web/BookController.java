@@ -65,7 +65,7 @@ public class BookController {
 	    }
 	
 	@GetMapping(value = "/delete/{id}") // endpointin polkumuuttujaksi, jolla päästään kiinni id-muuttujaan
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String deleteBook(@PathVariable("id") Long id, Model model) { // -> long tyyppinen polkumuuttuja
     	repository.deleteById(id);
         return "redirect:../booklist"; // .. pääsee taaksepäin
