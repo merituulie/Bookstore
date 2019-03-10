@@ -8,6 +8,7 @@ import hh.swd20.Bookstore.domain.BookstoreRepository;
 import hh.swd20.Bookstore.domain.CategoryRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,11 @@ public class BookController {
 	
 	@Autowired
 	private CategoryRepository crepository;
+	
+	@RequestMapping(value="/login") // itse pääsin edellinen-painikkeella uloskirjautumisen jälkeenkin vielä sivuille. Miten sen voisi estää? Sessiolaskurilla?
+	public String login() {
+		return "login";
+	}
 
 	@RequestMapping(value="/booklist")
 	public String bookList(Model model) {
@@ -32,11 +38,13 @@ public class BookController {
 		return "booklist";
 	}
 	
+	//RESTfull homma
 	@GetMapping(value="/books")
 	public @ResponseBody List<Book> bookListRest() {
 		return (List<Book>) repository.findAll();
 	}
 	
+	//RESTfull homma
 	@GetMapping(value="/books/{id}")
 	public @ResponseBody Optional<Book> findBookRest(@PathVariable("id") Long bookId) {
 		return repository.findById(bookId);
@@ -54,10 +62,11 @@ public class BookController {
     public String saveBook(Book book){ // template syöttää name-attribuutin arvoista oliolle tiedot
 		repository.save(book); // osaa tehdä niin insertin kuin updaten
         return "redirect:booklist";
-	    } 
+	    }
 	
 	@GetMapping(value = "/delete/{id}") // endpointin polkumuuttujaksi, jolla päästään kiinni id-muuttujaan
-    public String deleteBook(@PathVariable("id") Long id, Model model) { // -> long tyyppinen polkumuuttuja
+	@PreAuthorize("hasRole('ADMIN')")
+	public String deleteBook(@PathVariable("id") Long id, Model model) { // -> long tyyppinen polkumuuttuja
     	repository.deleteById(id);
         return "redirect:../booklist"; // .. pääsee taaksepäin
     }
