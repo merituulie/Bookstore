@@ -44,6 +44,16 @@ public class Book {
 		this.category = category;
 	}
 	
+	public Book(String title, String author, String isbn, double price,
+			int year) {
+		super();
+		this.title = title;
+		this.author = author;
+		this.isbn = isbn;
+		this.price = price;
+		this.year = year;
+	}
+	
 	public Long getId() {
 		return id;
 	}
