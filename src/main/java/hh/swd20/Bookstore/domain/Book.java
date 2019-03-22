@@ -6,7 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,8 +18,6 @@ public class Book {
 	
 	private String title, author, isbn;
 	private double price;
-	
-	@Size(min=3, max=4)
 	private int year;
 	
 	@ManyToOne
