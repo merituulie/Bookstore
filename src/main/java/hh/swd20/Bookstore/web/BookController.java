@@ -3,6 +3,8 @@ package hh.swd20.Bookstore.web;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import hh.swd20.Bookstore.domain.Book;
 import hh.swd20.Bookstore.domain.BookstoreRepository;
 import hh.swd20.Bookstore.domain.CategoryRepository;
@@ -52,8 +54,8 @@ public class BookController {
 	
 	
 	@RequestMapping(value = "/add")
-    public String addBook(Model model){
-    	model.addAttribute("book", new Book()); // annetaan yksi tyhjä olio
+    public String addBook(Model model, @Valid Book book){
+    	model.addAttribute("book", book); // annetaan yksi tyhjä olio
         model.addAttribute("categories", crepository.findAll());
     	return "addbook";
     }

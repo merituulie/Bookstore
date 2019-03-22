@@ -4,9 +4,12 @@
     <title>Add book</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
-</head>
+	</head>
 <body>
 	<h3>Add book</h3>
+	<div th:if="${param.error}">
+		Invalid value in some of the fields. Input in the field "year" must be a number.
+	</div>
 	<div class="table table-striped">
 		<form th:object="${book}" th:action="@{save}" action="#" method="post">
 		  	<label for="author">Author</label>
@@ -20,6 +23,7 @@
 			<div style="clear: both; display: block; height: 10px;"></div>
 			<label for="year">Year</label>
 			<input type="text" th:field="*{year}" />
+			<div th:if="${fields.hasErrors('year')}" th:errors="*{year}">Value must be a 4-digit number</div>
 			<div style="clear: both; display: block; height: 10px;"></div>						
 		  	<label for="catlist">Category</label>
 			 <select id="catlist" th:field="*{category}" class="form-control">
